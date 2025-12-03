@@ -172,7 +172,7 @@ def run(config):
     socketio.emit('scene-prompt', scene_name, room=client_id)
 
     kf_gen.increment_kf_idx()
-    ###### ------------------ Main loop ------------------ ######
+    print("###### ------------------ Main loop ------------------ ######")
 
     if config['gen_sky'] or not os.path.exists(f'examples/sky_images/{example}/finished_3dgs_sky_tanh.ply'):
         traindatas = kf_gen.convert_to_3dgs_traindata(xyz_scale=xyz_scale, remove_threshold=None, use_no_loss_mask=False)
@@ -348,6 +348,7 @@ def run(config):
                 min_index = foreground_cols_idx.min().item()
                 max_index = foreground_cols_idx.max().item()
                 mask_using_full_render[:, :, :, min_index:max_index+1] = 1
+            print(f"Foreground cols: {min_index} to {max_index}")
             mask_using_full_render[:, :, :sky_cond_width, :] = 1
             mask_using_full_render[:, :, :side_sky_height, :sky_cond_width] = 1
             mask_using_full_render[:, :, :side_sky_height, -sky_cond_width:] = 1
@@ -672,7 +673,7 @@ if __name__ == "__main__":
             run(config)
         except Exception as e:
             print(e)
-            import ipdb
-            ipdb.post_mortem()
+            # import ipdb
+            # ipdb.post_mortem()
     else:
         run(config)

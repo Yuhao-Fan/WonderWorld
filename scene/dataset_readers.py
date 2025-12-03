@@ -352,7 +352,8 @@ def loadCamerasFromData(traindata, white_background):
 
         norm_data = im_data / 255.0
         arr = norm_data[:,:,:3] * norm_data[:, :, 3:4] + bg * (1 - norm_data[:, :, 3:4])
-        image = Image.fromarray(np.array(arr*255.0, dtype=np.byte), "RGB")
+        
+        image = Image.fromarray(np.array(arr*255.0, dtype=np.uint8), "RGB")
         loaded_mask = np.ones_like(norm_data[:, :, 3:4])
 
         fovy = focal2fov(fov2focal(fovx, image.size[1]), image.size[0])
@@ -407,7 +408,7 @@ def loadCameraPreset(traindata, presetdata):
 
 
 def readDataInfo(traindata, white_background):
-    print("Reading Training Transforms")
+    print("Reading Training Transforms1")
     
     train_cameras = loadCamerasFromData(traindata, white_background)
 

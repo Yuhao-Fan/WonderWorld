@@ -1153,7 +1153,12 @@ class KeyframeGen(FrameSyn):
 
         # Remove points below the ground height
         sky_rows_idx = torch.where(mask.any(dim=1))[0]
-        max_idx = sky_rows_idx.max().item()
+        print(f"Sky rows idx numel: {sky_rows_idx.numel()}")
+        max_idx = 0
+        if sky_rows_idx.numel() > 0:
+            max_idx = sky_rows_idx.max().item()
+        else:
+            print("Warning: no sky rows found in the mask!")
         ground_threshold = -0.0003 if max_idx <= 255 else -0.003
         mask_above_ground = new_points_3d[:, 1] >= ground_threshold
         new_points_3d = new_points_3d[mask_above_ground]
